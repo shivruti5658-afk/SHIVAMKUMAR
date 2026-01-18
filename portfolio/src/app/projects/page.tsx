@@ -2,56 +2,19 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ImageGallery from "@/components/ImageGallery";
+import { projectsData } from "@/data/projects";
 import { useState } from "react";
 
-const categories = ["All", "Web", "Mobile", "AI"];
-
-const projects = [
-  {
-    title: "E-Commerce Platform",
-    description:
-      "A full-stack e-commerce solution with React, Node.js, and MongoDB",
-    image: "/project1.jpg",
-    technologies: ["React", "Node.js", "MongoDB", "Stripe"],
-    link: "#",
-    category: "Web",
-  },
-  {
-    title: "Mobile Banking App",
-    description:
-      "Secure mobile banking application with biometric authentication",
-    image: "/project2.jpg",
-    technologies: ["React Native", "Firebase", "Biometric Auth"],
-    link: "#",
-    category: "Mobile",
-  },
-  {
-    title: "AI-Powered Analytics Dashboard",
-    description: "Real-time analytics dashboard with machine learning insights",
-    image: "/project3.jpg",
-    technologies: ["Next.js", "Python", "TensorFlow", "D3.js"],
-    link: "#",
-    category: "AI",
-  },
-  {
-    title: "Social Media Management Tool",
-    description: "Comprehensive social media management platform",
-    image: "/project4.jpg",
-    technologies: ["Vue.js", "Express", "PostgreSQL", "AWS"],
-    link: "#",
-    category: "Web",
-  },
-];
-
 export default function Projects() {
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
 
-  const filteredProjects =
-    selectedCategory === "All"
-      ? projects
-      : projects.filter((project) => project.category === selectedCategory);
+  const selectedProject = selectedProjectId
+    ? projectsData.find((p) => p.id === selectedProjectId)
+    : null;
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -84,17 +47,27 @@ export default function Projects() {
         <section className="py-10 px-4">
           <div className="max-w-7xl mx-auto text-center">
             <div className="flex flex-wrap justify-center gap-4">
-              {categories.map((category) => (
+              <button
+                onClick={() => setSelectedProjectId(null)}
+                className={`px-6 py-2 rounded-full font-semibold transition-colors ${
+                  selectedProjectId === null
+                    ? "bg-primary text-background"
+                    : "bg-primary/10 text-primary hover:bg-primary/20"
+                }`}
+              >
+                All Projects
+              </button>
+              {projectsData.map((project) => (
                 <button
-                  key={category}
-                  onClick={() => setSelectedCategory(category)}
+                  key={project.id}
+                  onClick={() => setSelectedProjectId(project.id)}
                   className={`px-6 py-2 rounded-full font-semibold transition-colors ${
-                    selectedCategory === category
+                    selectedProjectId === project.id
                       ? "bg-primary text-background"
                       : "bg-primary/10 text-primary hover:bg-primary/20"
                   }`}
                 >
-                  {category}
+                  {project.title}
                 </button>
               ))}
             </div>
@@ -104,48 +77,152 @@ export default function Projects() {
         {/* Projects Grid */}
         <section className="py-20 px-4">
           <div className="max-w-7xl mx-auto">
-            <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 gap-8"
-              layout
-            >
-              {filteredProjects.map((project, index) => (
-                <motion.div
-                  key={project.title}
-                  className="bg-background/50 border border-primary/20 rounded-lg overflow-hidden hover:border-primary/50 transition-colors"
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  whileHover={{ scale: 1.02 }}
-                >
-                  <div className="h-48 bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-                    <span className="text-6xl">🚀</span>
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-xl font-semibold mb-3 text-primary">
-                      {project.title}
+            {selectedProjectId && selectedProject ? (
+              // Detailed Project View with Gallery
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+              >
+                {/* Project Header */}
+                <div className="mb-8">
+                  <button
+                    onClick={() => setSelectedProjectId(null)}
+                    className="text-primary hover:text-primary/80 mb-4 flex items-center gap-2"
+                  >
+                    ← Back to All Projects
+                  </button>
+                  <h2 className="text-4xl md:text-5xl font-bold mb-4 text-primary">
+                    {selectedProject.title}
+                  </h2>
+                  <p className="text-lg text-muted mb-6">
+                    {selectedProject.description}
+                  </p>
+
+                  {/* Tech Stack */}
+                  <div className="mb-6">
+                    <h3 className="text-lg font-semibold mb-3 text-primary">
+                      Technologies
                     </h3>
-                    <p className="text-muted mb-4">{project.description}</p>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {project.technologies.map((tech) => (
+                    <div className="flex flex-wrap gap-2">
+                      {selectedProject.technologies.map((tech) => (
                         <span
                           key={tech}
-                          className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm"
+                          className="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm"
                         >
                           {tech}
                         </span>
                       ))}
                     </div>
-                    <a
-                      href={project.link}
-                      className="inline-block px-6 py-2 bg-primary text-background rounded-full font-semibold hover:bg-primary/80 transition-colors"
-                    >
-                      View Project
-                    </a>
                   </div>
-                </motion.div>
-              ))}
-            </motion.div>
+
+                  {/* Links */}
+                  <div className="flex gap-4 mb-8">
+                    {selectedProject.liveLink && (
+                      <a
+                        href={selectedProject.liveLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-6 py-2 bg-primary text-background rounded-lg hover:bg-primary/80 transition-colors font-semibold"
+                      >
+                        Visit Live Project →
+                      </a>
+                    )}
+                    {selectedProject.caseStudyLink && (
+                      <Link
+                        href={selectedProject.caseStudyLink}
+                        className="px-6 py-2 border-2 border-primary text-primary rounded-lg hover:bg-primary/10 transition-colors font-semibold"
+                      >
+                        Read Case Study →
+                      </Link>
+                    )}
+                  </div>
+                </div>
+
+                {/* Image Gallery */}
+                {selectedProject.images && selectedProject.images.length > 0 && (
+                  <ImageGallery
+                    images={selectedProject.images}
+                    projectTitle={selectedProject.title}
+                  />
+                )}
+
+                {/* Results Section */}
+                {selectedProject.results && (
+                  <motion.section
+                    className="mt-12 p-8 bg-primary/5 border border-primary/20 rounded-lg"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
+                    viewport={{ once: true }}
+                  >
+                    <h3 className="text-2xl font-bold mb-4 text-primary">Results</h3>
+                    <p className="text-lg text-muted">{selectedProject.results}</p>
+                  </motion.section>
+                )}
+              </motion.div>
+            ) : (
+              // Projects List View
+              <motion.div
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                layout
+              >
+                {projectsData.map((project, index) => (
+                  <motion.div
+                    key={project.id}
+                    className="bg-background/50 border border-primary/20 rounded-lg overflow-hidden hover:border-primary/50 transition-colors cursor-pointer"
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                    whileHover={{ scale: 1.02 }}
+                    onClick={() => setSelectedProjectId(project.id)}
+                  >
+                    {/* Project Image Preview */}
+                    <div className="h-48 bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center relative overflow-hidden">
+                      {project.images && project.images.length > 0 ? (
+                        <Image
+                          src={project.images[0].thumbnail || project.images[0].src}
+                          alt={project.images[0].alt}
+                          fill
+                          className="object-cover"
+                        />
+                      ) : (
+                        <span className="text-6xl">📸</span>
+                      )}
+                    </div>
+                    <div className="p-6">
+                      <h3 className="text-xl font-semibold mb-3 text-primary">
+                        {project.title}
+                      </h3>
+                      <p className="text-muted mb-4 line-clamp-2">
+                        {project.description}
+                      </p>
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {project.technologies.slice(0, 3).map((tech) => (
+                          <span
+                            key={tech}
+                            className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                        {project.technologies.length > 3 && (
+                          <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">
+                            +{project.technologies.length - 3} more
+                          </span>
+                        )}
+                      </div>
+                      {project.images && (
+                        <p className="text-sm text-muted/70">
+                          📸 {project.images.length} screenshots
+                        </p>
+                      )}
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
+            )}
           </div>
         </section>
       </main>

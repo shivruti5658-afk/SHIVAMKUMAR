@@ -30,8 +30,7 @@ export const projectsData: Project[] = [
         caption: "DBS Dashboard View",
       },
     ],
-    results:
-      "Professional implementation with modern UI/UX design principles.",
+    results: "Professional implementation with modern UI/UX design principles.",
     liveLink: "https://example-dbs.com",
     caseStudyLink: "/projects/project-1",
   },
