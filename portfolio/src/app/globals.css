@@ -1,0 +1,300 @@
+@import "tailwindcss";
+
+/* ============================================
+   P0 RENDERING FIX - Hard Reset (PRD Section 3)
+   ============================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  backface-visibility: hidden;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+  height: auto;
+}
+
+* {
+  overscroll-behavior: none;
+}
+
+/* ============================================
+   GPU & RENDERING OPTIMIZATION
+   ============================================ */
+body {
+  will-change: scroll-position;
+}
+
+section {
+  contain: layout paint;
+}
+
+/* ============================================
+   DARK MODE (Default) - Premium Dark Theme
+   ============================================ */
+:root {
+  /* Background Colors */
+  --bg-primary: #0b0f19;
+  --bg-secondary: #111827;
+  --bg-elevated: #161e2e;
+
+  /* Text Colors */
+  --text-primary: #ffffff;
+  --text-secondary: #b6c0d1;
+
+  /* Accent Colors */
+  --accent-primary: #00e5ff;
+  --accent-secondary: #7c3aed;
+
+  /* Border & Utility */
+  --border: #1f2937;
+  --background: var(--bg-primary);
+  --foreground: var(--text-primary);
+  --muted: var(--text-secondary);
+  --primary: var(--accent-primary);
+  --secondary: var(--accent-secondary);
+
+  /* Transitions */
+  --transition-fast: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Font Families */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* ============================================
+   LIGHT MODE - Premium Light Theme
+   ============================================ */
+[data-theme="light"] {
+  /* Background Colors */
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-elevated: #f1f5f9;
+
+  /* Text Colors */
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+
+  /* Accent Colors - Premium but strong */
+  --accent-primary: #1d4ed8;
+  --accent-secondary: #6d28d9;
+
+  /* Border & Utility */
+  --border: #cbd5e1;
+  --background: var(--bg-primary);
+  --foreground: var(--text-primary);
+  --muted: var(--text-secondary);
+  --primary: var(--accent-primary);
+  --secondary: var(--accent-secondary);
+}
+
+/* ============================================
+   GLOBAL STYLES
+   ============================================ */
+html {
+  color-scheme: light dark;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  transition: background-color var(--transition-normal),
+    color var(--transition-normal);
+}
+
+/* Smooth transitions on theme change */
+* {
+  transition: background-color var(--transition-normal),
+    color var(--transition-normal), border-color var(--transition-normal),
+    box-shadow var(--transition-normal);
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ============================================
+    PROGRESS BAR
+   ============================================ */
+.progress-track {
+  width: 100%;
+  height: 8px;
+  background-color: rgba(var(--accent-primary), 0.2);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0;
+  background-color: var(--accent-primary);
+  border-radius: 999px;
+  transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: width;
+}
+
+.progress-fill.animate {
+  width: var(--progress-value, 0%);
+}
+
+@media (max-width: 640px) {
+  .progress-track {
+    height: 6px;
+  }
+}
+
+/* ============================================
+   ANIMATED GRADIENT BACKGROUND
+   ============================================ */
+.animated-bg-container {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.gradient-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.2;
+  will-change: transform;
+}
+
+.blob-1 {
+  width: 500px;
+  height: 500px;
+  background: linear-gradient(
+    135deg,
+    var(--accent-primary),
+    var(--accent-secondary)
+  );
+  animation: gradientShift1 30s ease-in-out infinite;
+}
+
+.blob-2 {
+  width: 450px;
+  height: 450px;
+  background: linear-gradient(
+    225deg,
+    var(--accent-secondary),
+    var(--accent-primary)
+  );
+  animation: gradientShift2 35s ease-in-out infinite;
+}
+
+.blob-3 {
+  width: 400px;
+  height: 400px;
+  background: linear-gradient(45deg, var(--accent-primary), var(--bg-primary));
+  animation: gradientShift3 40s ease-in-out infinite;
+}
+
+@keyframes gradientShift1 {
+  0%,
+  100% {
+    background: linear-gradient(
+      135deg,
+      var(--accent-primary),
+      var(--accent-secondary)
+    );
+  }
+  50% {
+    background: linear-gradient(
+      135deg,
+      var(--accent-secondary),
+      var(--accent-primary)
+    );
+  }
+}
+
+@keyframes gradientShift2 {
+  0%,
+  100% {
+    background: linear-gradient(
+      225deg,
+      var(--accent-secondary),
+      var(--accent-primary)
+    );
+  }
+  50% {
+    background: linear-gradient(
+      225deg,
+      var(--accent-primary),
+      var(--accent-secondary)
+    );
+  }
+}
+
+@keyframes gradientShift3 {
+  0%,
+  100% {
+    background: linear-gradient(45deg, var(--accent-primary), var(--bg-primary));
+  }
+  50% {
+    background: linear-gradient(45deg, var(--bg-primary), var(--accent-primary));
+  }
+}
+
+/* Reduce motion support */
+@media (prefers-reduced-motion: reduce) {
+  .gradient-blob {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* Mobile: Reduce intensity and disable cursor tracking */
+@media (max-width: 768px) {
+  .gradient-blob {
+    filter: blur(50px);
+    opacity: 0.15;
+  }
+
+  .blob-1 {
+    width: 350px;
+    height: 350px;
+  }
+
+  .blob-2 {
+    width: 300px;
+    height: 300px;
+  }
+
+  .blob-3 {
+    width: 250px;
+    height: 250px;
+  }
+}
+
+/* ============================================
+   DROPDOWN & POPOVER OPACITY FIX
+   ============================================ */
+[data-radix-popper-content-wrapper] {
+  background-color: var(--bg-elevated) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
