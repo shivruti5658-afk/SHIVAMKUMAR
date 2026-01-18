@@ -10,7 +10,9 @@ import { projectsData } from "@/data/projects";
 import { useState } from "react";
 
 export default function Projects() {
-  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
+    null,
+  );
 
   const selectedProject = selectedProjectId
     ? projectsData.find((p) => p.id === selectedProjectId)
@@ -140,12 +142,13 @@ export default function Projects() {
                 </div>
 
                 {/* Image Gallery */}
-                {selectedProject.images && selectedProject.images.length > 0 && (
-                  <ImageGallery
-                    images={selectedProject.images}
-                    projectTitle={selectedProject.title}
-                  />
-                )}
+                {selectedProject.images &&
+                  selectedProject.images.length > 0 && (
+                    <ImageGallery
+                      images={selectedProject.images}
+                      projectTitle={selectedProject.title}
+                    />
+                  )}
 
                 {/* Results Section */}
                 {selectedProject.results && (
@@ -156,8 +159,12 @@ export default function Projects() {
                     transition={{ duration: 0.6 }}
                     viewport={{ once: true }}
                   >
-                    <h3 className="text-2xl font-bold mb-4 text-primary">Results</h3>
-                    <p className="text-lg text-muted">{selectedProject.results}</p>
+                    <h3 className="text-2xl font-bold mb-4 text-primary">
+                      Results
+                    </h3>
+                    <p className="text-lg text-muted">
+                      {selectedProject.results}
+                    </p>
                   </motion.section>
                 )}
               </motion.div>
@@ -182,7 +189,9 @@ export default function Projects() {
                     <div className="h-48 bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center relative overflow-hidden">
                       {project.images && project.images.length > 0 ? (
                         <Image
-                          src={project.images[0].thumbnail || project.images[0].src}
+                          src={
+                            project.images[0].thumbnail || project.images[0].src
+                          }
                           alt={project.images[0].alt}
                           fill
                           className="object-cover"
