@@ -3,6 +3,7 @@
 ## Overview
 
 This implementation provides a premium image gallery for your Next.js portfolio with:
+
 - ✅ Responsive grid layout (1/2/3+ columns based on device)
 - ✅ Full-screen lightbox viewer with smooth animations
 - ✅ Keyboard navigation (Arrow keys, ESC)
@@ -37,28 +38,28 @@ src/
 Edit `src/data/projects.ts` and add your projects:
 
 ```typescript
-import { Project } from '@/types/project';
+import { Project } from "@/types/project";
 
 export const projectsData: Project[] = [
   {
-    id: 'your-project-id',
-    title: 'Project Title',
-    description: 'Project description...',
-    technologies: ['React', 'Next.js', 'Tailwind CSS'],
+    id: "your-project-id",
+    title: "Project Title",
+    description: "Project description...",
+    technologies: ["React", "Next.js", "Tailwind CSS"],
     images: [
       {
-        id: 'img-1',
-        src: '/projects/your-project/image1.png',
-        thumbnail: '/projects/your-project/image1-thumb.png',
-        alt: 'Image description',
-        type: 'landing-page', // or: admin-panel, dashboard, plugin, website, ui-design
-        caption: 'Optional caption',
+        id: "img-1",
+        src: "/projects/your-project/image1.png",
+        thumbnail: "/projects/your-project/image1-thumb.png",
+        alt: "Image description",
+        type: "landing-page", // or: admin-panel, dashboard, plugin, website, ui-design
+        caption: "Optional caption",
       },
       // ... more images
     ],
-    results: 'Achieved X% increase in...',
-    liveLink: 'https://example.com',
-    caseStudyLink: '/projects/your-project',
+    results: "Achieved X% increase in...",
+    liveLink: "https://example.com",
+    caseStudyLink: "/projects/your-project",
   },
 ];
 ```
@@ -66,8 +67,8 @@ export const projectsData: Project[] = [
 ### 2. Use in Your Pages
 
 ```tsx
-import ProjectDetailPage from '@/components/ProjectDetailPage';
-import { projectsData } from '@/data/projects';
+import ProjectDetailPage from "@/components/ProjectDetailPage";
+import { projectsData } from "@/data/projects";
 
 export default function ProjectPage() {
   const project = projectsData[0]; // or fetch by ID
@@ -78,15 +79,10 @@ export default function ProjectPage() {
 ### 3. Or Use Gallery Component Standalone
 
 ```tsx
-import ImageGallery from '@/components/ImageGallery';
+import ImageGallery from "@/components/ImageGallery";
 
 export default function MyPage() {
-  return (
-    <ImageGallery 
-      images={project.images} 
-      projectTitle={project.title} 
-    />
-  );
+  return <ImageGallery images={project.images} projectTitle={project.title} />;
 }
 ```
 
@@ -145,6 +141,7 @@ public/
 ## Features Included
 
 ### Gallery Grid
+
 - ✅ 3 columns (desktop) → 2 columns (tablet) → 1 column (mobile)
 - ✅ 16:10 aspect ratio (crop center-fit)
 - ✅ Smooth hover effects with expand icon
@@ -152,6 +149,7 @@ public/
 - ✅ Lazy loading for images below the fold
 
 ### Lightbox Viewer
+
 - ✅ Full-screen modal with dark background
 - ✅ Original resolution image display
 - ✅ Navigation arrows (previous/next)
@@ -162,6 +160,7 @@ public/
 - ✅ Smooth animations (fade-in, zoom)
 
 ### Accessibility
+
 - ✅ ARIA labels for all interactive elements
 - ✅ Focus management in lightbox
 - ✅ Keyboard navigation
@@ -170,6 +169,7 @@ public/
 - ✅ Semantic HTML
 
 ### Performance
+
 - ✅ Images lazy-loaded by default
 - ✅ WebP format with PNG fallback (via Next.js Image)
 - ✅ Optimized thumbnails load first
@@ -234,11 +234,11 @@ priority={true}  {/* Load all immediately */}
 
 ## Keyboard Shortcuts
 
-| Key | Action |
-|-----|--------|
-| **ESC** | Close lightbox |
-| **←** | Previous image |
-| **→** | Next image |
+| Key               | Action                          |
+| ----------------- | ------------------------------- |
+| **ESC**           | Close lightbox                  |
+| **←**             | Previous image                  |
+| **→**             | Next image                      |
 | **Enter / Space** | (On gallery item) Open lightbox |
 
 ---
@@ -304,6 +304,7 @@ priority={true}  {/* Load all immediately */}
 ## Support
 
 For issues or questions, check:
+
 - Component accessibility in `ImageLightbox.tsx`
 - Image paths in `src/data/projects.ts`
 - CSS animations in component files
