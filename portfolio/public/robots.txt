@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://portfolio-xxx.onrender.com/sitemap.xml
+
+# Disallow private pages (if any)
+# Disallow: /admin
+# Disallow: /private
