@@ -23,6 +23,9 @@ export const metadata: Metadata = {
   authors: [{ name: "Shivam Kumar" }],
   creator: "Shivam Kumar",
   publisher: "Shivam Kumar",
+  verification: {
+    google: "ocAI_Q-rloDT1Wm2yHxROegupocBzMrq63YgobpNaQc",
+  },
   formatDetection: {
     email: false,
     address: false,
